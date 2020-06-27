@@ -6,6 +6,7 @@ import 'package:audioplayers/audio_cache.dart';
 
 import 'CircularProgress.dart';
 
+const String kTitle = 'Mauvaise surprise';
 enum PlayerState { stopped, playing, paused }
 
 void main() {
@@ -16,13 +17,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mauvaise surprise',
+      title: kTitle,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.yellow,
         fontFamily: 'FredokaOne',
       ),
-      home: MyHomePage(title: 'Mauvaise Surprise'),
+      home: MyHomePage(title: kTitle),
     );
   }
 }
@@ -49,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final int delay = 7000;
   bool displayProgress = false;
 
+  Timer barkingTimer;
   String buttonImagePath;
 
   @override
@@ -78,7 +80,13 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                displayProgress ? CircularProgress(size: 250, duration: Duration(milliseconds: delay), color: Colors.blue,) : Container(width: 250),
+                displayProgress
+                    ? CircularProgress(
+                        size: 250,
+                        duration: Duration(milliseconds: delay),
+                        color: Colors.blue,
+                      )
+                    : Container(width: 250),
               ],
             ),
             Column(
@@ -88,10 +96,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   onTap: () {
                     if (mounted) {
                       setState(() {
-                        displayProgress = true;
-                        Timer(Duration(milliseconds: delay), () {
-                          play();
-                        });
+                        if (playerState == PlayerState.playing) {
+                          displayProgress = false;
+                          stop();
+                          barkingTimer?.cancel();
+                        } else {
+                          displayProgress = true;
+                          barkingTimer = Timer(Duration(milliseconds: delay), () {
+                            play();
+                          });
+                        }
                       });
                     }
                   },
