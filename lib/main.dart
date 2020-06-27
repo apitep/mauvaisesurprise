@@ -7,6 +7,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'CircularProgress.dart';
 
 const String kTitle = 'Mauvaise surprise';
+const double kButtonSize = 250;
 enum PlayerState { stopped, playing, paused }
 
 void main() {
@@ -82,11 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 displayProgress
                     ? CircularProgress(
-                        size: 250,
+                        size: kButtonSize,
                         duration: Duration(milliseconds: delay),
                         color: Colors.blue,
                       )
-                    : Container(width: 250),
+                    : Container(width: kButtonSize),
               ],
             ),
             Column(
@@ -110,8 +111,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   },
                   child: AnimatedContainer(
-                    width: 250,
-                    height: 250,
+                    width: kButtonSize,
+                    height: kButtonSize,
                     duration: Duration(milliseconds: 400),
                     curve: Curves.bounceOut,
                     decoration: BoxDecoration(
